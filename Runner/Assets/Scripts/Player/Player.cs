@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private int _health;
+
+    public void ApplyDamage(int damage) 
     {
-        
+        _health -= damage;
+
+        if (_health <= 0)
+        {
+            Die();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Die() 
     {
-        
+    
     }
 }
