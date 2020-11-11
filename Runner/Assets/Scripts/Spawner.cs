@@ -1,13 +1,17 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Spawner : MonoBehaviour
+public class Spawner : ObjectPool
 {
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private Transform[] _spawnPoints;
     [SerializeField] private float _secondsBetweenSpawn;
 
     private float _elapsedTime = 0;
+
+    private void Start()
+    {
+        Initialize(_enemyPrefab);
+    }
 
     private void Update()
     {
@@ -17,9 +21,20 @@ public class Spawner : MonoBehaviour
         {
             _elapsedTime = 0;
 
-            int spawnPointNumber = Random.Range(0, _spawnPoints.Length);
-            Debug.Log("MAKE SPAWN");
-            Instantiate(_enemyPrefab, _spawnPoints[spawnPointNumber]);
+            if(TryGetObject(out GameObject enemy))
+            {
+                _elapsedTime = 0;
+
+                int spawnPointNumber = Random.Range(0, _spawnPoints.Length);
+
+                SetEnemy(enemy, _spawnPoints[spawnPointNumber].position);
+            }
         }
+    }
+
+    private void SetEnemy(GameObject enemy, Vector3 spawnPoint ) 
+    {
+        enemy.SetActive(true);
+        enemy.transform.position = spawnPoint;
     }
 }
