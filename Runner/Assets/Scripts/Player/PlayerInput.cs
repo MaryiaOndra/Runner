@@ -1,21 +1,33 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(PlayerMover))]
 public class PlayerInput : MonoBehaviour
 {
-    private PlayerMover _mover;
+    PlayerMover mover;
+    Scene activeScene;
+
 
     private void Start()
     {
-        _mover = GetComponent<PlayerMover>();
+        mover = GetComponent<PlayerMover>();
+        activeScene = SceneManager.GetActiveScene();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-            _mover.TryMoveUp();
+        if (activeScene.buildIndex == 1)
+        {
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+                mover.TryMoveUp();
 
-        if (Input.GetKeyDown(KeyCode.S))
-            _mover.TryMoveDown();
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+                mover.TryMoveDown();
+        }
+        else
+        {
+            float _horizontalInput = Input.GetAxis("Horizontal");
+            mover.MoveRight(_horizontalInput);
+        }
     }
 }
