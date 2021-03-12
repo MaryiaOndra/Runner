@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStartMover : MonoBehaviour
 {
@@ -26,5 +27,13 @@ public class PlayerStartMover : MonoBehaviour
         var _velocity = playerRb.velocity;
         _velocity.x = Vector2.right.x * _horizInput * speed;
         playerRb.velocity = _velocity;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("NextLvlTrigger"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 }
